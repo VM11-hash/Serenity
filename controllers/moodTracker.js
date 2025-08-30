@@ -1,6 +1,5 @@
 const User = require("../models/user.js");
 const wrapAsync = require("../utils/wrapAsync.js");
-const ExpressError = require("../utils/ExpressError");
 
 async function resolveCurrentUser(req) {
   if (req.user) {

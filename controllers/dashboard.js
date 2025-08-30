@@ -1,7 +1,7 @@
 const User = require("../models/user.js");
 const { affirmations } = require("../public/js/affirmations.js");
 const wrapAsync = require("../utils/wrapAsync.js");
-const ExpressError = require("../utils/ExpressError");
+const ExpressError = require("../utils/expressError.js");
 
 module.exports.renderDashboard = wrapAsync(async (req, res) => {
   if (req.isAuthenticated()) {

@@ -7,7 +7,7 @@ const {
 } = require("../public/js/moodHeadings.js");
 const User = require('../models/user.js');
 const wrapAsync = require("../utils/wrapAsync.js");
-const ExpressError = require("../utils/ExpressError");
+const ExpressError = require("../utils/expressError.js");
 
 module.exports.renderChooseMood = (req, res) => {
   if (req.isAuthenticated()) {
