@@ -1,4 +1,5 @@
 const SecretNote = require("../models/secretNote.js");
+const wrapAsync = require("../utils/wrapAsync.js");
 
 function ym(d = new Date()) {
   const tz = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
@@ -9,7 +10,7 @@ function endOfMonth(monthStr) {
   return new Date(Date.UTC(y, m, 0, 23, 59, 59, 999));
 }
 
-module.exports.renderJar = async (req, res) => {
+module.exports.renderJar = wrapAsync(async (req, res) => {
   const month = ym();
   const lockedUntil = endOfMonth(month);
   const isLocked = new Date() < lockedUntil;
@@ -17,11 +18,11 @@ module.exports.renderJar = async (req, res) => {
     .sort({ createdAt: 1 })
     .lean();
   res.render("pages/jarView.ejs", { month, isLocked, lockedUntil, notes });
-};
+});
 
-module.exports.storeJar = async (req, res) => {
+module.exports.storeJar = wrapAsync(async (req, res) => {
   const text = (req.body.text || "").trim().slice(0, 500);
-  if (!text) return res.redirect("back");
+  if (!text) return res.redirect("/dashboard");
   await SecretNote.create({ userId: req.user._id, month: ym(), text });
-  res.redirect("/jar");
-};
+  res.redirect("/dashboard");
+})

@@ -97,6 +97,19 @@ app.get("/resources",(req,res) => {
   res.render("pages/resources.ejs");
 })
 
+app.use((req, res, next) => {
+  res.status(404).render("error/404.ejs", {
+    message: "Page not found"
+  });
+});
+
+app.use((err, req, res, next) => {
+  const { status = 500, message = "Something went wrong!" } = err;
+  console.error(err.stack); 
+
+  res.status(status).render("error/error.ejs", { status, message });
+});
+
 app.listen(8000, (req, res) => {
   console.log("Server is listening to port 8000");
 });

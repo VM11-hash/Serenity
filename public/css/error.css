@@ -1,0 +1,18 @@
+.error-page {
+  min-height: 75vh;
+  width: 100vw;
+  background: radial-gradient(circle, #ffffff, #fbe6ef, #fad8e5);
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-content: center;
+}
+.error-msg{
+    border: 5px solid red;
+    background-color: rgba(255, 0, 0, 0.5);
+    padding :40px;
+    margin : 20px;
+    border-radius: 25px;
+}

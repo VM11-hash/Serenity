@@ -6,6 +6,8 @@ const {
   moodDescription,
 } = require("../public/js/moodHeadings.js");
 const User = require('../models/user.js');
+const wrapAsync = require("../utils/wrapAsync.js");
+const ExpressError = require("../utils/ExpressError");
 
 module.exports.renderChooseMood = (req, res) => {
   if (req.isAuthenticated()) {
@@ -25,7 +27,8 @@ module.exports.renderMoodQues = (req, res) => {
     res.render("pages/reasons.ejs", { mood, myMood, myMoodStyle });
   }else res.redirect("/signup");
 };
-module.exports.moodQues = async (req, res) => {
+
+module.exports.moodQues = wrapAsync(async (req, res) => {
   try {
     const mood = req.params.moodName; 
     const userId = req.user._id; 
@@ -38,10 +41,7 @@ module.exports.moodQues = async (req, res) => {
     }
 
     const user = await User.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found." });
-    }
+    if (!user) return next(new ExpressError("User not found", 404));
 
     const newMoodEntry = {
       mood: mood,
@@ -58,7 +58,7 @@ module.exports.moodQues = async (req, res) => {
     console.error("Error saving mood:", error);
     res.status(500).json({ message: "Internal server error." });
   }
-};
+});
 
 module.exports.renderMoodActivities = (req, res) => {
   if (req.isAuthenticated()) {

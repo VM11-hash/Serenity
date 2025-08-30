@@ -1,0 +1,9 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<link href="/css/error.css" rel="stylesheet">
+<div class="error-page">
+    <div class="error-msg">
+        <h1>Error <%= status %></h1>
+        <p><%= message %></p>
+    </div>
+    <a href="/dashboard">Go back home</a>
+</div>

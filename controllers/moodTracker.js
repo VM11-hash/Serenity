@@ -1,4 +1,6 @@
 const User = require("../models/user.js");
+const wrapAsync = require("../utils/wrapAsync.js");
+const ExpressError = require("../utils/ExpressError");
 
 async function resolveCurrentUser(req) {
   if (req.user) {
@@ -13,7 +15,7 @@ async function resolveCurrentUser(req) {
   return null;
 }
 
-module.exports.renderTracker = async (req, res) => {
+module.exports.renderTracker = wrapAsync(async (req, res) => {
   if (req.isAuthenticated()) {
     try {
       const user = await resolveCurrentUser(req);
@@ -36,9 +38,9 @@ module.exports.renderTracker = async (req, res) => {
   } else {
     res.redirect("/signup");
   }
-};
+});
 
-module.exports.renderData = async (req, res) => {
+module.exports.renderData = wrapAsync(async (req, res) => {
   try {
     if (!req.user) {
       return res.status(401).json({ error: "Not authenticated" });
@@ -57,4 +59,4 @@ module.exports.renderData = async (req, res) => {
     console.error("Error fetching moods:", err);
     res.status(500).json({ error: "Failed to fetch mood data" });
   }
-};
+});
